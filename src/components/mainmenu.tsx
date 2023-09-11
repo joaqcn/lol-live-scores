@@ -8,14 +8,25 @@ interface PlayerData {
   summonerLevel: number;
   profileIconId: number;
   puuid: string;
-  // Add other properties as needed based on the API response
+  id: string; // Add the id property to store the summoner id
 }
+
+// Define an interface to represent the expected structure of ranked data
+interface RankedData {
+  queueType: string;
+  tier: string;
+  rank: string;
+  leaguePoints: number;
+  wins: number;
+  losses: number;
+}
+
 const MainMenu = () => {
+  const [rankedData, setRankedData] = useState<RankedData | null>(null);
   const [searchPlayer, setSearchPlayer] = useState("");
   const API = configuration.API_KEY;
-  const [playerData, setPlayerData] = useState<PlayerData | null>(null); // Use the PlayerData interface here
+  const [playerData, setPlayerData] = useState<PlayerData | null>(null);
 
-  console.log(searchPlayer);
 
   function searchForPlayer(event: React.MouseEvent<HTMLButtonElement>) {
     let APICALL =
@@ -23,18 +34,46 @@ const MainMenu = () => {
       searchPlayer +
       "?api_key=" +
       API;
+      
     axios
-      .get<PlayerData>(APICALL) // Specify the expected response data type
+      .get<PlayerData>(APICALL)
       .then((response) => {
         setPlayerData(response.data);
         console.log(response.data);
+
+        // Make a second API request to get ranked data
+        let RANKEDAPICALL =
+          "https://la1.api.riotgames.com/lol/league/v4/entries/by-summoner/" +
+          response.data.id +
+          "?api_key=" +
+          API;
+
+        axios
+          .get<RankedData[]>(RANKEDAPICALL)
+          .then((rankedResponse) => {
+            // Find the entry with queueType "RANKED_SOLO_5x5"
+            const soloRankedData = rankedResponse.data.find(
+              (entry) => entry.queueType === "RANKED_SOLO_5x5"
+            );
+
+            if (soloRankedData) {
+              setRankedData(soloRankedData);
+              console.log(soloRankedData);
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       })
       .catch((error) => {
         console.log(error);
       });
   }
 
-  function getChampionMastery
+function getWinRate(wins: number, losses: number) {
+  const winrate = Math.round((wins / (wins + losses)) * 100);
+  return winrate + "%";
+}
 
   return (
     <div className="min-h-screen flex justify-center items-center">
@@ -71,11 +110,21 @@ const MainMenu = () => {
             </div>
             <p className="mt-2">Summoner level: {playerData.summonerLevel}</p>
             <p> {playerData.puuid}</p>
-            
           </div>
         ) : (
           <p className="mt-4">Player not found</p>
         )}
+        {rankedData ? (
+          <div className="mt-4">
+            <p>Queue Type: {rankedData.queueType}</p>
+            <p>Tier: {rankedData.tier}</p>
+            <p>Rank: {rankedData.rank}</p>
+            <p>League Points: {rankedData.leaguePoints}</p>
+            <p>Wins: {rankedData.wins}</p>
+            <p>Losses: {rankedData.losses}</p>
+            <p>Winrate: {getWinRate(rankedData.wins,rankedData.losses)}</p>
+          </div>
+        ) : null}
       </div>
     </div>
   );
