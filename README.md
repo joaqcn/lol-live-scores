@@ -1,46 +1,63 @@
-# Getting Started with Create React App
+# League of Legends Tracking App
+This is a simple web application for tracking League of Legends (LoL) player information, including their summoner details and ranked statistics. It allows users to search for a LoL player by their in-game name and provides information about the player's profile, such as summoner level, profile icon, and ranked statistics.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Features
+Player Search: Users can enter a LoL player's in-game name to search for their summoner details.
 
-## Available Scripts
+Summoner Information: Once a player is found, the app displays their summoner name, level, profile icon, and unique identifier (puuid).
 
-In the project directory, you can run:
+Ranked Statistics: The app fetches and displays the player's ranked information, including tier, rank, league points, wins, losses, and winrate.
 
-### `npm start`
+## Technologies Used
+React: The app is built using the React JavaScript library, making it a dynamic and interactive user interface.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Axios: Axios is used to make HTTP requests to the Riot Games API to fetch player and ranked data.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+Riot Games API: The app leverages the Riot Games API to retrieve player information and ranked statistics.
 
-### `npm test`
+## Getting Started
+To run this app locally, follow these steps:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Clone this repository to your local machine:
 
-### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+git clone https://github.com/your-username/lol-tracking-app.git
+Navigate to the project directory:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
+cd lol-tracking-app
+Install dependencies:
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+npm install
+Configure your Riot Games API key:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+Obtain a Riot Games API key from the Riot Developer Portal.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+Create a file named configuration.ts in the utils directory.
 
-## Learn More
+## Inside configuration.ts, export your API key as follows:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+export const configuration = {
+  API_KEY: "YOUR_RIOT_API_KEY",
+};
+Start the development server:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+sql
+Copy code
+npm start
+Open your web browser and go to http://localhost:3000 to use the app.
+
+Usage
+Enter the LoL player's in-game name in the search input field.
+
+Click the "Search for player" button to retrieve the player's information.
+
+The app will display the player's summoner information and ranked statistics, including tier, rank, league points, wins, losses, and winrate.
+
+## License
+This project is licensed under the MIT License. See the LICENSE file for details.
+
+## Acknowledgments
+Special thanks to Riot Games for providing access to the League of Legends API.
